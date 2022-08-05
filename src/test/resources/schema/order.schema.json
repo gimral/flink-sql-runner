@@ -1,0 +1,69 @@
+{
+  "title": "order",
+  "type": "object",
+  "required": [
+    "order_number",
+    "product_name",
+    "price"
+  ],
+  "properties": {
+    "order_number": {
+      "type": "integer"
+    },
+    "product_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "price": {
+      "type": "number"
+    },
+    "order_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delivery_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "buyer": {
+      "title": "buyer",
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "address": {
+          "title": "address",
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            }
+          }
+        },
+        "phone_numbers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "country_code": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
