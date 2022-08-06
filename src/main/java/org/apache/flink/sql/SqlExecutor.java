@@ -34,9 +34,7 @@ public class SqlExecutor {
         registerCatalogs(tableEnv,sqlConfiguration.getCatalogs());
 
         String script = FileUtils.readFileUtf8(new File(file));
-        List<String> statements = sqlParser.parseStatements(script);
-
-
+        List<String> statements = sqlParser.parseStatements(script,sqlConfiguration.getEnvironmentVariables());
 
         for (String statement : statements) {
             LOG.info("Executing:\n{}", statement);
@@ -57,9 +55,5 @@ public class SqlExecutor {
 
             tableEnv.executeSql(statementBuilder.toString());
         });
-
-
-//                "CATALOG_KAFKA_TYPE"
-//                "CATALOG_KAFKA_PROPERTIES_BOOTSTRAP_SERVERS"
     }
 }

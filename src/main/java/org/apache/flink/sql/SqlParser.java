@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 
 public class SqlParser {
     private static final Logger LOG = LoggerFactory.getLogger(SqlParser.class);
@@ -15,8 +17,19 @@ public class SqlParser {
     @SuppressWarnings("RegExpRedundantEscape")
     private static final String COMMENT_PATTERN = "(--.*)|(((\\/\\*)+?[\\w\\W]+?(\\*\\/)+))";
 
-    public List<String> parseStatements(String script) {
+    public static final String ENVIRONMENT_PREFIX_KEY = "ENVIRONMENT_PREFIX_KEY";
+    private static final String ENVIRONMENT_PREFIX_DEFAULT = "ENV:";
+
+    public List<String> parseStatements(String script, Map<String,String> environmentVariables) {
         String formatted = formatSql(script).replaceAll(COMMENT_PATTERN, "");
+
+        String envPrefix = environmentVariables.getOrDefault(ENVIRONMENT_PREFIX_KEY,ENVIRONMENT_PREFIX_DEFAULT);
+
+        for (Map.Entry<String,String> environmentVariable:
+             environmentVariables.entrySet()) {
+            formatted = formatted.replaceAll( Matcher.quoteReplacement(envPrefix + environmentVariable.getKey()),environmentVariable.getValue());
+        }
+
         List<String> statements = new ArrayList<>();
 
         StringBuilder current = null;

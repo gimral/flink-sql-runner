@@ -55,6 +55,9 @@ public class SqlConfiguration {
     public Map<String,Map<String,String>> getCatalogs(){
         return catalogs;
     }
+    public Map<String,String> getEnvironmentVariables(){
+        return environmentConfiguration.getenv();
+    }
 
     private Map<String,String> loadEnv(){
         Map<String,String> envVariables = new HashMap<>();

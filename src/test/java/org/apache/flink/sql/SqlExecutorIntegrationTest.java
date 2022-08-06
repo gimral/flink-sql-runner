@@ -78,7 +78,7 @@ public class SqlExecutorIntegrationTest {
     private static Stream<Arguments> provideSqlParameters() {
         return Stream.of(
                 Arguments.of("sql/simple-kafka.sql", "order"),
-                Arguments.of("sql/statement-set-datagen.sql", "")
+                Arguments.of("sql/env-variable-blackhole.sql", "")
         );
     }
 
@@ -95,6 +95,8 @@ public class SqlExecutorIntegrationTest {
         env.put("CATALOG_KAFKA_PROPERTIES_BOOTSTRAP_SERVERS","localhost:" + KAFKA_PORT);
         env.put("CATALOG_KAFKA_SCHEMA_REGISTRY_URI","http://localhost:" + SR_PORT);
         env.put("TABLE_EXEC_STATE_TTL","10000");
+        env.put("TARGET_TABLE","blackhole_table");
+        env.put(SqlParser.ENVIRONMENT_PREFIX_KEY,"$");
         EnvironmentConfiguration environmentConfiguration = mock(EnvironmentConfiguration.class);
         when(environmentConfiguration.getenv()).thenReturn(env);
         SqlConfiguration sqlConfiguration = new SqlConfiguration(environmentConfiguration);

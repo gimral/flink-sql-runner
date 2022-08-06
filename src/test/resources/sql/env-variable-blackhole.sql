@@ -27,11 +27,11 @@ CREATE TABLE orders (
 
 CREATE TABLE print_table WITH ('connector' = 'print')
     LIKE orders;
-CREATE TABLE blackhole_table WITH ('connector' = 'blackhole')
+CREATE TABLE $TARGET_TABLE WITH ('connector' = 'blackhole')
     LIKE orders;
 
 EXECUTE STATEMENT SET
 BEGIN
-INSERT INTO blackhole_table SELECT * FROM orders;
-INSERT INTO blackhole_table SELECT * FROM orders;
+INSERT INTO $TARGET_TABLE SELECT * FROM orders;
+INSERT INTO $TARGET_TABLE SELECT * FROM orders;
 END;
