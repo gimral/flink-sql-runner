@@ -1,4 +1,4 @@
-package org.apache.flink.sql;
+package org.apache.flink.configuration;
 
 import org.apache.flink.configuration.EnvironmentConfiguration;
 import org.apache.flink.configuration.SqlConfiguration;
@@ -68,5 +68,25 @@ public class SqlConfigurationTest {
         Map<String,Map<String,String>> catalogs = sqlConfiguration.getCatalogs();
         assertEquals(3,catalogs.size());
         assertEquals(expectedCatalogs,catalogs);
+    }
+
+    @Test
+    public void testTableEnvironmentConfiguration() {
+        Map<String,String> env = new HashMap<>();
+        env.put("TABLE_EXEC_STATE_TTL","10000");
+        env.put("TABLE_EXEC_RESOURCE_DEFAULT__PARALLELISM","1");
+
+        EnvironmentConfiguration environmentConfiguration = mock(EnvironmentConfiguration.class);
+        when(environmentConfiguration.getenv()).thenReturn(env);
+        SqlConfiguration sqlConfiguration = new SqlConfiguration(environmentConfiguration);
+
+        Map<String,String> expectedConf = new HashMap<>();
+        expectedConf.put("table.exec.state.ttl","10000");
+        expectedConf.put("table.exec.resource.default-parallelism","1");
+
+        sqlConfiguration.load();
+        Map<String,String> tableEnvironmentConfiguration = sqlConfiguration.getTableEnvironmentConfiguration();
+        assertEquals(2,tableEnvironmentConfiguration.size());
+        assertEquals(expectedConf,tableEnvironmentConfiguration);
     }
 }

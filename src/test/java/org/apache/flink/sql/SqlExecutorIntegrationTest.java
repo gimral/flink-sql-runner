@@ -84,7 +84,7 @@ public class SqlExecutorIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("provideSqlParameters")
-    public void testSql(String resourceName,String topicName) throws IOException, InterruptedException {
+    public void testSql(String resourceName,String topicName) throws IOException {
         TestUtil testUtil = new TestUtil();
         File file = testUtil.loadResourceFile(resourceName);
 
@@ -94,6 +94,7 @@ public class SqlExecutorIntegrationTest {
         env.put("CATALOG_KAFKA_TYPE","kafka");
         env.put("CATALOG_KAFKA_PROPERTIES_BOOTSTRAP_SERVERS","localhost:" + KAFKA_PORT);
         env.put("CATALOG_KAFKA_SCHEMA_REGISTRY_URI","http://localhost:" + SR_PORT);
+        env.put("TABLE_EXEC_STATE_TTL","10000");
         EnvironmentConfiguration environmentConfiguration = mock(EnvironmentConfiguration.class);
         when(environmentConfiguration.getenv()).thenReturn(env);
         SqlConfiguration sqlConfiguration = new SqlConfiguration(environmentConfiguration);

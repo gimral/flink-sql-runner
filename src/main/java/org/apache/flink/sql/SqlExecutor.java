@@ -30,7 +30,7 @@ public class SqlExecutor {
 
         sqlConfiguration.load();
 
-        TableEnvironment tableEnv = TableEnvironment.create(new Configuration());
+        TableEnvironment tableEnv = TableEnvironment.create(Configuration.fromMap(sqlConfiguration.getTableEnvironmentConfiguration()));
         registerCatalogs(tableEnv,sqlConfiguration.getCatalogs());
 
         String script = FileUtils.readFileUtf8(new File(file));

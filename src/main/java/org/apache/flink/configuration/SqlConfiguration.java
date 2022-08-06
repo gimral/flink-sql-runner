@@ -6,9 +6,11 @@ import java.util.Map;
 
 public class SqlConfiguration {
     private static final String CATALOG_PREFIX = "catalog.";
+    private static final String TABLE_PREFIX = "table.";
 
     private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String,String> originalConfig;
+    private final Map<String,String> tableEnvironmentConfiguration;
     private final Map<String,Map<String,String>> catalogs;
 
     public SqlConfiguration() {
@@ -19,6 +21,7 @@ public class SqlConfiguration {
         this.environmentConfiguration = environmentConfiguration;
         originalConfig = new HashMap<>();
         catalogs = new HashMap<>();
+        tableEnvironmentConfiguration = new HashMap<>();
     }
 
     public void load(){
@@ -35,11 +38,19 @@ public class SqlConfiguration {
                         .put(keyParts[1],v);
             }
         });
+
+        originalConfig.forEach((k,v) -> {
+            if(k.startsWith(TABLE_PREFIX)){
+                tableEnvironmentConfiguration.put(k,v);
+            }
+        });
+
     }
 
-    public Map<String,String> getOriginalConfig(){
-        return originalConfig;
+    public Map<String,String> getTableEnvironmentConfiguration(){
+        return tableEnvironmentConfiguration;
     }
+
 
     public Map<String,Map<String,String>> getCatalogs(){
         return catalogs;
